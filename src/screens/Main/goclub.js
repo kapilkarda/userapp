@@ -32,7 +32,7 @@ class Chat extends PureComponent {
   }
 
   onRefresh(){
-    axios.get(`http://3.92.60.33:5000/api/members/` + Cache.currentUser._id)
+    axios.get(`http://3.92.60.33:8083/api/members/` + Cache.currentUser._id)
     .then(res => {
       console.log('res,           res', res)
       const results = res.data.data.remarks;
@@ -46,17 +46,17 @@ class Chat extends PureComponent {
   }
 
   message(){
-    if(this.state.chatdata.length == 0){
+   /* if(this.state.chatdata.length == 0){
       Toast.fail('You can not start chat !')
       this.setState({message:''})
-    } else {
+    } else {*/
       // Toast.success('Your message sent !')
 
       this.props.actions.sendChat(this.state.message, Cache.currentUser._id)
       this.setState({message:''})
       this.onRefresh()
 
-    }
+   // }
   }
 
   _renderItem = ({ item }) => (

@@ -7,6 +7,8 @@ export function setChat(chat){
   }
 }
 
+
+
 export function setOffer(offer){
 
   return dispatch =>{

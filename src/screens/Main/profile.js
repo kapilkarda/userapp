@@ -24,7 +24,19 @@ class Account extends React.Component {
       _id:Cache.currentUser._id
     }
   }
+  pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      base64: true,
+    });
+if (!result.cancelled) {
+      this.setState({
+        image: result.uri,
+      });
+      console.log(' edit profile image',  image)
 
+    }
+  };
   async takePicture(){
     let res = await Permissions.askAsync(Permissions.CAMERA)
     if ( res.status ==='granted'){
@@ -48,9 +60,9 @@ class Account extends React.Component {
 }
 
   editprofile(){
-    console.log(' edit profile image',  this.props.editimage)
+    console.log(' edit profile image1',  this.state.image)
     let { firstname, lastname, email, password, name, phone, _id } = this.state
-    this.props.actions.editprofile( name, firstname, lastname, email, password, this.props.editimage, phone, _id )
+    this.props.actions.editprofile( name, firstname, lastname, email, password, this.state.image, phone, _id )
   }
 
   logOut(){
@@ -74,10 +86,10 @@ class Account extends React.Component {
           <View style={{justifyContent:'center', alignItems:'center', width:'100%', height:150}}>
             {
             this.state.image
-              ? <TouchableOpacity onPress={()=>this.takePicture()}>
+              ? <TouchableOpacity onPress={()=>this.pickImage()}>
                   <Image source = {{uri:this.state.image}} style={{width: 100, height:100, borderRadius:50}} />
                 </TouchableOpacity>
-              : <TouchableOpacity style={styles.icon} onPress={()=>this.takePicture()}>
+              : <TouchableOpacity style={styles.icon} onPress={()=>this.pickImage()}>
                   <SimpleLineIcons name="user-follow" size={40} color='#fff' />
                 </TouchableOpacity>
             }

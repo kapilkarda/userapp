@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Image, FlatList } from 'react
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Cache from '../../../utils/cache'
 
 import * as actions from "../../../store/common/actions";
 
@@ -11,8 +12,12 @@ class Main extends React.Component {
   constructor(props) {
     super(props)
     this.state={
+      count:Cache.currentUser.count,
+      image:Cache.currentUser.image,
+
       username:'',
-      password:''
+      password:'',
+
     }
   }
 
@@ -27,26 +32,32 @@ class Main extends React.Component {
 
   calculate(){
     let note = ''
-    let value = this.props.count;
+    let value = this.state.count;
+    console.log ('hi, my count1', this.state.count)
+
     if (value % 5 == 1) {
       note = ''
     }
-    if (value % 5 == 2) {
+   else if (value % 5 == 2) {
       note = ''
     }
-    if (value % 5 == 3) {
+   else if (value % 5 == 3) {
       note = '10% discount on 3rd Stamp'
     }
-    if (value % 5 == 4) {
+   else if (value % 5 == 4) {
       note = ''
     }
-    if (value % 5 == 0) {
+   else if (value % 5 == 0) {
       note = '20% discount on 5th Stamp'
     }
+    else
     if (value == 0) {
       note = ''
     }
+    console.log('hi, my count1', this.state.count)
+
     return(
+
       <Text style={{fontSize:18, fontWeight:'300', marginTop:15}}> {note}</Text>
     )
   }
@@ -77,6 +88,8 @@ class Main extends React.Component {
 
   render() {
     const { me, count } = this.props
+    const value = this.props.count;
+    console.log ('hi, my count11', value)
 
     console.log('hi, my count', count)
     console.log('hi, my info', me)
@@ -103,8 +116,8 @@ class Main extends React.Component {
               : <View style={{justifyContent:'center', alignItems:'center'}}>
                   <Image
                     style={styles.circle}
-                    source={{uri:me.photoUrl ? me.photoUrl : (me.image?me.image:'https://twu.edu/media/images/cas/NoImage300sq.jpg')}}
-                  />
+                    source={{uri:this.state.image ? this.state.image : 'https://twu.edu/media/images/cas/NoImage300sq.jpg'}}
+                    />
                  <View style={{flexDirection:'row', alignItems:'center', marginTop: 20}}>
                     
                     <View style={ this.props.count % 5 == 1 || this.props.count == 0 ? styles.stampB :styles.stamp}>

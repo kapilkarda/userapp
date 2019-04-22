@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
 import _ from 'underscore'
 
-let BaseUrl = 'http://3.92.60.33:5000/api/'
+let BaseUrl = 'http://3.92.60.33:8083/api/'
 
 export function setUser(data){
   return dispatch =>{
@@ -90,15 +90,16 @@ export const increaseCount = ( count, _id ) => {
 export const getAll = ( count, _id ) => {
   var headers = { "Content-Type": "application/json" };
   return dispatch => {
-    axios .get(BaseUrl + "members", { headers: headers })
+    axios .get(BaseUrl + "members/fetch-images/", { headers: headers })
       .then(function(response) {
         var data = response.data;
-        
-        var mapping = _.filter(data, (u)=>{
-          return u.admin == 2 
-        })
+        console.log("fetch image data",data)
 
-        dispatch({ type: types.GET_ALL, data: mapping });
+        // var mapping = _.filter(data, (u)=>{
+        //   return u.admin == 2 
+        // })
+
+        dispatch({ type: types.GET_ALL, data: data });
       })
       .catch(function(error) {
         console.log(error)
@@ -106,6 +107,8 @@ export const getAll = ( count, _id ) => {
       });
   };
 };
+
+
 
 export const sendChat = (content, _id) => {
   var headers = { "Content-Type": "application/json" };

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, TouchableWithoutFeedback,ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
 import { SimpleLineIcons, MaterialCommunityIcons,FontAwesome, Ionicons } from '@expo/vector-icons';
 import { colors } from '../colors'
+//import { ScrollView } from 'react-native-gesture-handler';
 
 class MainTabBar extends Component {
   render() {
@@ -32,7 +33,7 @@ class MainTabBar extends Component {
         <TouchableWithoutFeedback onPress={() => navigate('Tab3')}>
           <View style={active === 'Tab3' ? styles.active : styles.nonactive}>
             <MaterialCommunityIcons name="stack-overflow" size={30} color={active === 'Tab3' ? colors.ORANGE : colors.GREY1} />
-            <Text style={active === 'Tab3' ? {color:colors.ORANGE} : {color:colors.GREY1}}>Discount</Text>
+            <Text style={active === 'Tab3' ? {color:colors.ORANGE} : {color:colors.GREY1}}>Disco.</Text>
           </View>
         </TouchableWithoutFeedback>
 
@@ -49,7 +50,13 @@ class MainTabBar extends Component {
             <Text style={active === 'Tab5' ? {color:colors.ORANGE} : {color:colors.GREY1}}>Profile</Text>
           </View>
         </TouchableWithoutFeedback>
-        
+       
+        <TouchableWithoutFeedback onPress={() => navigate('Tab6')}>
+          <View style={active === 'Tab6' ? styles.active : styles.nonactive}>
+            <SimpleLineIcons name="star" size={25} color={active === 'Tab6' ? colors.ORANGE : colors.GREY1}/>
+            <Text style={active === 'Tab6' ? {color:colors.ORANGE} : {color:colors.GREY1}}>Stars</Text>
+          </View>
+        </TouchableWithoutFeedback>
 
       </View>
     );
