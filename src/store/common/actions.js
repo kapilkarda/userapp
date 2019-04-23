@@ -3,6 +3,7 @@ import {Toast} from 'antd-mobile-rn';
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
 import _ from 'underscore'
+import Cache from '../../utils/cache'
 
 let BaseUrl = 'http://3.92.60.33:8083/api/'
 
@@ -12,18 +13,24 @@ export function setUser(data){
   }
 }
 
-export const register = (name, email, password, image) => {
+export const register = (name, email, password,image) => {
+  console.log(name, email, password, image)
   var headers = {"Content-Type": "application/json" };
   return dispatch => {
     axios .post(BaseUrl + "members/register", {name, email, password, image, firstname:'', lastname:'', phone:'', count: 0, remarks:[] },  { headers: headers })
       .then(function(response) {
         Toast.success("Congratulations!");
-        Actions.pop()
+                Cache.currentUser = response.member
+
+        Actions.pop('')
+        Actions.main()
         var data = response.data.results;
         dispatch({ type: types.REGISTER, data: data });
       })
       .catch(function(error) {
-        // Toast.fail("Please confirm correct information!");
+         Toast.fail("Please confirm correct information!");
+         console.log(error)
+
         dispatch({ type: types.FAILED });
       });
   };

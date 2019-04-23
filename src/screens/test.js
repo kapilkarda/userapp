@@ -29,19 +29,32 @@ class Test extends React.Component {
   };
 
   signIn = async () => {
+    console.log("success")
+
     try {
       const result = await Expo.Google.logInAsync({
+        // androidClientId:
+        //   "603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com",
+        // iosClientId: "603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com",
         androidClientId:
-          "603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com",
-        iosClientId: "603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com",
+        "312060251874-f52sn4mca9las8m3f73c9grktf6nsgvb.apps.googleusercontent.com",
+      iosClientId: "312060251874-hcmu0ji71ld1149qaa07tsq90oo9ac5g.apps.googleusercontent.com",
         scopes: ["profile", "email"]
+
       })
+     
+      console.log("success",result.token)
 
       if (result.type === "success") {
+        console.log("success",result.token)
 
-         this.props.actions.register(result.user.name, result.user.email, 'password', result.user.photoUrl)
-         this.props.actions.login(result.user.email, 'password')
+        console.log("success",result.user.name, result.user.email
+      )
 
+       //  this.props.actions.register(result.user.name, result.user.email, 'password', result.user.photoUrl)
+        // this.props.actions.login(result.user.email, 'password')
+         this.continue(result.user.name, result.user.email, 'password',result.user.photoUrl )
+         this.loginf(result.user.email, 'password')
       } else {
         console.log("cancelled")
       }
@@ -60,29 +73,71 @@ class Test extends React.Component {
       const { type, token } = result;
 
       if (type === 'success') {
-        Alert.alert('Logged in!', JSON.stringify(result), [
-          {
-            text: 'OK!',
-            onPress: () => {
-              console.log('This is token', result.token);
-            },
-          },
-        ]);
+      
+        // Alert.alert('Logged in!', JSON.stringify(result), [
+        //   {
+        //     text: 'OK!',
+        //     onPress: () => {
+        //       console.log('This is token', result.token);
+      
+          //   },
+          // },
+       // ]);
           let userInfoResponse = await fetch(
-          `https://graph.facebook.com/me?access_token=${result.token}&fields=id,name,picture.type(large)`
+          `https://graph.facebook.com/me?access_token=${result.token}&fields=id,name,email,picture.type(large)`
         );
         const userInfo = await userInfoResponse.json();
-        console.log('This is user Info --------------->', userInfo)
-
+        console.log('This is user Info --------------->', userInfo.picture.data.url)
+      //  this.state.email=userInfo.email
+       // this.setState(this.state.email,'password')
+       // this.login()
+       this.continue(userInfo.name, userInfo.email, 'password',userInfo.picture.data.url )
+       this.loginf(userInfo.email, 'password')
+       // Actions.main()
+        // api.register(userInfo.name, userInfo.email, 'pass', '', (err,res)=> {
+        //   if (err == null) {
+        //     console.log('res', res)
+        //     // this.setState({isWaiting:false})
+        //     Cache.currentUser = res.results
+        //     Actions.pop('')
+        //     Actions.main()
+        //   }
+        // })
+       // api.login(userInfo.email,userInfo.password)
       }
     } catch (e) {
-      Alert.alert('Error!', e.message, [{ text: 'OK', onPress: () => {} }]);
+      Alert.alert('Error!', e.message, [{ text: 'OK', onPress: () =>{} }]);
     }
   };
-
+  continue(name,email,pass,img){
+    this.setState({isWaiting:true})
+    api.register(name,email,pass,img, (err,res)=>{
+      if (err == null ){
+        console.log('res', res)
+        this.setState({isWaiting:false})
+        Cache.currentUser = res.results
+        Actions.pop('')
+        Actions.main()
+      }
+      this.setState({isWaiting:false})
+    })
+  }
   login(){
     this.setState({isWaiting:true})
     api.login(this.state.email, this.state.password, (err,res)=>{
+      if (err == null ){
+        console.log('res', res)
+        Cache.currentUser = res.member
+        this.setState({isWaiting:false})
+        this.setState({email:'', password:''})
+        Actions.main()
+      }
+      this.setState({isWaiting:false})
+    })
+  }
+  loginf(email,pass){
+    this.setState({isWaiting:true})
+    api.login(email,pass, (err,res)=>{
       if (err == null ){
         console.log('res', res)
         Cache.currentUser = res.member

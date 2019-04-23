@@ -13,7 +13,7 @@ class Main extends React.Component {
     super(props)
     this.state={
       count:Cache.currentUser.count,
-      image:Cache.currentUser.image,
+     image:Cache.currentUser.image,
 
       username:'',
       password:'',
@@ -41,13 +41,13 @@ class Main extends React.Component {
    else if (value % 5 == 2) {
       note = ''
     }
-   else if (value % 5 == 3) {
+   else if (value  == 3) {
       note = '10% discount on 3rd Stamp'
     }
    else if (value % 5 == 4) {
       note = ''
     }
-   else if (value % 5 == 0) {
+   else if (value == 5) {
       note = '20% discount on 5th Stamp'
     }
     else
@@ -89,10 +89,10 @@ class Main extends React.Component {
   render() {
     const { me, count } = this.props
     const value = this.props.count;
-    console.log ('hi, my count11', value)
+    // console.log ('hi, my count11', value)
 
-    console.log('hi, my count', count)
-    console.log('hi, my info', me)
+    // console.log('hi, my count', count)
+    // console.log('hi, my info', me)
 
     return (
       <View style={styles.container} >
